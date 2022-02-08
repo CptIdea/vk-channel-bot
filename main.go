@@ -37,6 +37,9 @@ func main() {
 	}
 
 	token := os.Getenv("TOKEN")
+	if token == "" {
+		log.Fatalln("TOKEN не должен быть пустым")
+	}
 	vk := api.NewVK(token)
 
 	// get information about the group
@@ -53,7 +56,7 @@ func main() {
 
 	// New message event
 	lp.MessageNew(func(_ context.Context, obj events.MessageNewObject) {
-		log.Printf("%d: %s (%d)", obj.Message.PeerID, obj.Message.Text, obj.Message.ConversationMessageID)
+		log.Printf("%d: %s (%d:%d)", obj.Message.FromID, obj.Message.Text, obj.Message.PeerID, obj.Message.ConversationMessageID)
 
 		if !inArray(obj.Message.FromID, admins) {
 			_, err := vk.MessagesDelete(params.NewMessagesDeleteBuilder().DeleteForAll(true).ConversationMessageIDs([]int{obj.Message.ConversationMessageID}).PeerID(obj.Message.PeerID).Params)
@@ -68,6 +71,7 @@ func main() {
 
 	// Run Bots Long Poll
 	log.Println("Start Long Poll")
+	log.Println("Бот запущен со списком админов:", admins)
 	if err := lp.Run(); err != nil {
 		log.Fatal(err)
 	}
