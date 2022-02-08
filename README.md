@@ -35,3 +35,7 @@ go run main.go
 ```
 timestamp user_id: message (peer_id:conversation_message_id)
 ```
+or
+```
+timestamp error
+```
