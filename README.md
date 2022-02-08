@@ -27,7 +27,7 @@ docker-compose up -d
 export TOKEN='*VK TOKEN*'
 export ADMINS=*список админов*
 
-go run main.go
+go run cmd/main.go
 ```
 
 
